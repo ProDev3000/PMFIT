@@ -166,17 +166,18 @@
         /* BOTTOM ARC */
         .bottom-arc {
             position: fixed;
-            bottom: -200px;
+            bottom: 0;
             left: -10%;
             width: 120%;
-            height: calc(320px + env(safe-area-inset-bottom));
+            height: 125px;
+            padding-bottom: env(safe-area-inset-bottom);
             background: #fff;
             border-top-left-radius: 50% 120px;
             border-top-right-radius: 50% 120px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            box-shadow: 0 -4px 30px rgba(0,0,0,0.03);
+            box-shadow: 0 300px 0 0 #fff, 0 -4px 30px rgba(0,0,0,0.03);
             z-index: 10;
         }
 
