@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Training">
     <link rel="apple-touch-icon" href="icon.png">
-    <title>Training Guide</title>
+    <title>Training</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
@@ -166,10 +166,10 @@
         /* BOTTOM ARC */
         .bottom-arc {
             position: fixed;
-            bottom: 0;
+            bottom: -200px;
             left: -10%;
             width: 120%;
-            height: 120px;
+            height: calc(320px + env(safe-area-inset-bottom));
             background: #fff;
             border-top-left-radius: 50% 120px;
             border-top-right-radius: 50% 120px;
