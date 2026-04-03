@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Training">
+    <title>Training Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        :root {
+            --bg: #F0F0F0;
+            --text-dark: #000000;
+            --text-light: #A0A0A0;
+            --modal-bg: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: calc(30px + env(safe-area-inset-top)) 20px 140px 20px;
+            overscroll-behavior-y: none;
+        }
+
+        /* HEADER */
+        .header {
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .arrow {
+            font-size: 20px;
+            font-weight: 700;
+            transform: translateY(2px);
+            transition: transform 0.2s;
+        }
+
+        .header.open .arrow {
+            transform: translateY(2px) rotate(180deg);
+        }
+
+        .sub-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-light);
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        /* DROPDOWN */
+        .dropdown {
+            position: absolute;
+            top: 80px;
+            left: -10px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 20;
+            min-width: 240px;
+        }
+
+        .dropdown.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg);
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px 15px;
+            margin-top: 20px;
+        }
+
+        .exercise-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .circle {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            font-weight: 900;
+            color: #000;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .circle:active {
+            transform: scale(0.9);
+        }
+
+        .ex-name {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.1;
+            max-width: 100px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-light);
+            margin-top: -4px;
+            transition: background 0.2s;
+        }
+        
+        .status-dot.filled {
+            background: #000;
+        }
+
+        /* BOTTOM ARC */
+        .bottom-arc {
+            position: fixed;
+            bottom: 0;
+            left: -10%;
+            width: 120%;
+            height: 120px;
+            background: #fff;
+            border-top-left-radius: 50% 120px;
+            border-top-right-radius: 50% 120px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.03);
+            z-index: 10;
+        }
+
+        .arc-inner-guide {
+             position: absolute;
+             top: 15px;
+             left: 10%;
+             width: 80%;
+             height: 120px;
+             border-top-left-radius: 50% 120px;
+             border-top-right-radius: 50% 120px;
+             border-top: 1px dashed #E0E0E0;
+             pointer-events: none;
+        }
+
+        .save-btn {
+            margin-top: -25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 28px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s, background 0.2s;
+            z-index: 11;
+        }
+
+        .save-btn:active {
+            transform: scale(0.9);
+            background: #f8f8f8;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            width: 100%;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 30px 20px 50px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .modal-target {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .close-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .brutal-input {
+            width: 100%;
+            border: none;
+            border-bottom: 4px solid #E0E0E0;
+            background: transparent;
+            font-size: 40px;
+            font-weight: 900;
+            color: #000;
+            padding: 5px 0;
+            border-radius: 0;
+            appearance: textfield;
+            transition: border-color 0.2s;
+        }
+
+        .brutal-input:focus {
+            outline: none;
+            border-color: #000;
+        }
+        
+        .brutal-input::-webkit-outer-spin-button,
+        .brutal-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .done-btn {
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 900;
+            border-radius: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.1s;
+        }
+        .done-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* TOAST */
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #000;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header" id="headerWrapper">
+        <h1 class="main-title" onclick="toggleDropdown()">
+            <span id="activeDayText">Laden...</span>
+            <span class="arrow">▼</span>
+        </h1>
+        <h2 class="sub-title">Guide</h2>
+
+        <div class="dropdown" id="dropdown">
+            <div class="dropdown-item" onclick="selectDay('ok_a', 'Oberkörper A')">Oberkörper A</div>
+            <div class="dropdown-item" onclick="selectDay('uk_a', 'Unterkörper A')">Unterkörper A</div>
+            <div class="dropdown-item" onclick="selectDay('ok_b', 'Oberkörper B')">Oberkörper B</div>
+            <div class="dropdown-item" onclick="selectDay('uk_b', 'Unterkörper B')">Unterkörper B</div>
+        </div>
+    </div>
+
+    <div class="grid" id="grid">
+        <!-- Circles will be rendered here -->
+    </div>
+
+    <div class="bottom-arc">
+        <div class="arc-inner-guide"></div>
+        <button class="save-btn" onclick="saveAll()">+</button>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="mTitle">TITLE</h2>
+                    <div class="modal-target" id="mTarget">TARGET</div>
+                </div>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+            
+            <div class="input-group">
+                <label>Sätze</label>
+                <input type="number" id="mSets" class="brutal-input" inputmode="numeric">
+            </div>
+            <div class="input-group">
+                <label>Start (kg)</label>
+                <input type="number" step="0.5" id="mStart" class="brutal-input" inputmode="decimal">
+            </div>
+            <div class="input-group">
+                <label>Heute (kg)</label>
+                <input type="number" step="0.5" id="mToday" class="brutal-input" inputmode="decimal">
+            </div>
+
+            <button class="done-btn" onclick="saveActiveEx()">Fertig</button>
+        </div>
+    </div>
+
+    <div id="toast">✓ Gespeichert</div>
+
+    <script>
+        const workouts = {
+            ok_a: [
+                { id: "oka_1", short:"BD", name: "Bankdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "oka_3", short:"SD", name: "Schulter", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "oka_4", short:"RU", name: "Rudern eng", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "oka_5", short:"TR", name: "Trizeps", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 },
+                { id: "oka_6", short:"BI", name: "Bizeps", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 }
+            ],
+            uk_a: [
+                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "uka_2", short:"KH", name: "Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "uka_3", short:"BS", name: "Beinstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
+                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
+                { id: "uka_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 }
+            ],
+            ok_b: [
+                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "okb_2", short:"BR", name: "B-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
+                { id: "okb_5", short:"HC", name: "Hammer", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 },
+                { id: "okb_6", short:"TÜ", name: "Trizeps üK", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 }
+            ],
+            uk_b: [
+                { id: "ukb_1", short:"BP", name: "B-presse tief", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
+                { id: "ukb_2", short:"AS", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
+                { id: "ukb_3", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
+                { id: "ukb_4", short:"RS", name: "Rücken", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
+                { id: "ukb_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 }
+            ]
+        };
+
+        const colors = [
+            '#FF8A45', '#A29DFE', '#FF6768', 
+            '#D9D2C5', '#FF7A00', '#FF3C2A', 
+            '#FDE1F5', '#FFD25A', '#DDA833', 
+            '#2BC47E', '#E1E1E1', '#DACFC2'
+        ];
+
+        let currentDayId = 'ok_a';
+        let currentDayName = 'Oberkörper A';
+        let activeExId = null;
+
+        let workingData = {};
+
+        function init() {
+            const savedData = JSON.parse(localStorage.getItem('brutalWorkoutData')) || {};
+            workingData = {...savedData};
+            selectDay('ok_a', 'Oberkörper A');
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdown').classList.toggle('show');
+            document.getElementById('headerWrapper').classList.toggle('open');
+        }
+
+        function selectDay(id, name) {
+            currentDayId = id;
+            currentDayName = name;
+            
+            document.getElementById('activeDayText').innerText = name;
+            document.getElementById('dropdown').classList.remove('show');
+            document.getElementById('headerWrapper').classList.remove('open');
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            
+            const exercises = workouts[currentDayId];
+            
+            exercises.forEach((ex, index) => {
+                const color = colors[index % colors.length];
+                const data = workingData[ex.id] || {};
+                const isFilled = data.sets || data.currentWeight;
+
+                const item = document.createElement('div');
+                item.className = 'exercise-item';
+                item.innerHTML = `
+                    <div class="circle" style="background-color: ${color}" onclick="openModal('${ex.id}')">
+                        ${ex.short}
+                    </div>
+                    <div class="status-dot ${isFilled ? 'filled' : ''}" id="dot_${ex.id}"></div>
+                    <div class="ex-name">${ex.name}</div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function openModal(exId) {
+            activeExId = exId;
+            const exInfo = workouts[currentDayId].find(e => e.id === exId);
+            const data = workingData[exId] || { sets: exInfo.defaultSets, startWeight: '', currentWeight: '' };
+
+            document.getElementById('mTitle').innerText = exInfo.name;
+            document.getElementById('mTarget').innerText = exInfo.target;
+            
+            document.getElementById('mSets').value = data.sets;
+            document.getElementById('mStart').value = data.startWeight;
+            document.getElementById('mToday').value = data.currentWeight;
+
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            activeExId = null;
+        }
+
+        function saveActiveEx() {
+            if(!activeExId) return;
+
+            workingData[activeExId] = {
+                sets: document.getElementById('mSets').value,
+                startWeight: document.getElementById('mStart').value,
+                currentWeight: document.getElementById('mToday').value
+            };
+            
+            const isFilled = workingData[activeExId].sets || workingData[activeExId].currentWeight;
+            const dot = document.getElementById(`dot_${activeExId}`);
+            if(dot) {
+                if(isFilled) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            }
+
+            closeModal();
+            localStorage.setItem('brutalWorkoutData', JSON.stringify(workingData));
+        }
+
+        function saveAll() {
+            localStorage.setItem('brutalWorkoutData', JSON.stringify(workingData));
+            showToast();
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.classList.add("show");
+            setTimeout(() => { toast.classList.remove("show"); }, 2500);
+            if(navigator.vibrate) navigator.vibrate(50);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#headerWrapper')) {
+                document.getElementById('dropdown').classList.remove('show');
+                document.getElementById('headerWrapper').classList.remove('open');
+            }
+            if (e.target.id === 'modalOverlay') {
+                closeModal();
+            }
+        });
+
+        window.onload = init;
+    </script>
+</body>
+</html>
