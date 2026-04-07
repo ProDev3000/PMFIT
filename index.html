@@ -423,6 +423,11 @@
                 <input type="number" step="0.5" id="mToday" class="brutal-input" inputmode="decimal">
             </div>
 
+            <div class="input-group" style="margin-top: 30px;">
+                <label>Notizen / Geräte-Einstellung</label>
+                <textarea id="mNotes" class="brutal-input" style="font-size: 16px; min-height: 40px; padding: 5px 0 10px; line-height: 1.4; resize: vertical; overflow: auto; border-bottom: 2px solid #E0E0E0;" placeholder="Sitzhöhe 4, Pad 2..."></textarea>
+            </div>
+
             <button class="done-btn" onclick="saveActiveEx()">Fertig</button>
         </div>
     </div>
@@ -433,35 +438,35 @@
         const workouts = {
             ok_a: [
                 { id: "oka_1", short:"BD", name: "KH-Bankdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Schultern fest auf der Bank." },
-                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Zur oberen Brust ziehen." },
-                { id: "oka_3", short:"SD", name: "Schulterdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Rumpf anspannen, neutrale Griffposition bevorzugen." },
+                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Volle Dehnung oben mitnehmen." },
+                { id: "oka_3", short:"FP", name: "Face-Pulls", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Zieht zur Stirn. Fokus hintere Schulter." },
                 { id: "oka_4", short:"RU", name: "Kabel-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Ellenbogen nah am Körper führen." },
-                { id: "oka_5", short:"TR", name: "Trizepsdrücken", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Oberarme fest am Körper fixieren." },
-                { id: "oka_6", short:"BI", name: "Bizeps-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Ellenbogen fixiert lassen, volle Dehnung unten." }
+                { id: "oka_5", short:"TR", name: "Trizepsdrücken", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Oberarme fest am Körper." },
+                { id: "oka_6", short:"SC", name: "Schrägbank-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Tiefe Dehnung im Bizeps (Arme hinter Körper)." }
             ],
             uk_a: [
-                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Druck über Ferse, kein spitzer Winkel. Füße mittig bis hoch platzieren." },
-                { id: "uka_2", short:"RK", name: "Rum. Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Rücken gerade, Dehnung in der Oberschenkelrückseite spüren." },
-                { id: "uka_3", short:"BH", name: "Beckenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Ersatz für Beinstrecker. Schont das Kniegelenk, fokussiert das Gesäß." },
-                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrollierte Bewegung." },
-                { id: "uka_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Volle Dehnung unten." },
-                { id: "uka_6", short:"CR", name: "Kabel-Crunches", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Bauchtraining. Aktives Einrollen der Wirbelsäule." }
+                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Druck über Ferse. Füße mittig bis hoch." },
+                { id: "uka_2", short:"RK", name: "Rum. Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Hüfte nach hinten, tiefe Dehnung Hamstrings." },
+                { id: "uka_3", short:"BH", name: "Beckenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Knieschonender Beinstrecker-Ersatz." },
+                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrollierte negative Bewegung." },
+                { id: "uka_5", short:"WS", name: "Waden (Sitzend)", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Fokus Soleus. Unten 2 Sek. strikte Pause!" },
+                { id: "uka_6", short:"CR", name: "Kabel-Crunches", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Aktives Einrollen der Wirbelsäule." }
             ],
             ok_b: [
-                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Fokus auf Kontraktion der Brust." },
-                { id: "okb_2", short:"BR", name: "Brust-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Entlastet den unteren Rücken." },
-                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Bank auf ca. 30 Grad." },
-                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Für die Schulterbreite. Arme leicht gebeugt." },
-                { id: "okb_5", short:"HC", name: "Hammer-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Daumen zeigen nach oben." },
-                { id: "okb_6", short:"TÜ", name: "Trizeps ü. Kopf", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Maximale Dehnung für den Trizeps." }
+                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Fokus Brustkontraktion." },
+                { id: "okb_2", short:"BR", name: "Brust-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Entlastet unteren Rücken." },
+                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Bank auf max. 30 Grad." },
+                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Arme leicht gebeugt (Wasserglas gießen)." },
+                { id: "okb_5", short:"HC", name: "Hammer-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Fokus Brachialis. Daumen nach oben." },
+                { id: "okb_6", short:"TÜ", name: "Trizeps ü. Kopf", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Genutzt für maximale Stretch-Verlängerung." }
             ],
             uk_b: [
-                { id: "ukb_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Füße wieder mittig/hoch. Kein spitzer Kniewinkel." },
-                { id: "ukb_2", short:"RA", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Ersatz für Walking Lunges. Schont die vordere Kniekapsel extrem." },
+                { id: "ukb_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Füße mittig/hoch." },
+                { id: "ukb_2", short:"RA", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Reverse Lunges (nach hinten). Extrem knieschonend." },
                 { id: "ukb_3", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrolliertes Ablassen." },
-                { id: "ukb_4", short:"RS", name: "Rückenstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Stärkt den Rumpf und den unteren Rücken." },
-                { id: "ukb_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Volle Dehnung unten." },
-                { id: "ukb_6", short:"BH", name: "Beinheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Bauchtraining. Becken am höchsten Punkt aktiv einrollen." }
+                { id: "ukb_4", short:"RS", name: "Rückenstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Stärkt Rumpf und unteren Rücken." },
+                { id: "ukb_5", short:"WSt", name: "Waden (Stehend)", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Fokus Gastrocnemius. Unten 2 Sek. Pause ohne Schwung!" },
+                { id: "ukb_6", short:"BH", name: "Beinheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Becken oben aktiv einrollen." }
             ]
         };
 
@@ -535,6 +540,7 @@
             document.getElementById('mSets').value = data.sets;
             document.getElementById('mStart').value = data.startWeight;
             document.getElementById('mToday').value = data.currentWeight;
+            document.getElementById('mNotes').value = data.notes || "";
 
             document.getElementById('modalOverlay').classList.add('show');
         }
@@ -550,7 +556,8 @@
             workingData[activeExId] = {
                 sets: document.getElementById('mSets').value,
                 startWeight: document.getElementById('mStart').value,
-                currentWeight: document.getElementById('mToday').value
+                currentWeight: document.getElementById('mToday').value,
+                notes: document.getElementById('mNotes').value
             };
             
             const isFilled = workingData[activeExId].sets || workingData[activeExId].currentWeight;
