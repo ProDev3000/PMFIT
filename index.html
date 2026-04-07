@@ -383,9 +383,9 @@
 
         <div class="dropdown" id="dropdown">
             <div class="dropdown-item" onclick="selectDay('ok_a', 'Oberkörper A')">Oberkörper A</div>
-            <div class="dropdown-item" onclick="selectDay('uk_a', 'Unterkörper A')">Unterkörper A</div>
+            <div class="dropdown-item" onclick="selectDay('uk_a', 'Unterkörper A (Knie)')">Unterkörper A (Knie)</div>
             <div class="dropdown-item" onclick="selectDay('ok_b', 'Oberkörper B')">Oberkörper B</div>
-            <div class="dropdown-item" onclick="selectDay('uk_b', 'Unterkörper B')">Unterkörper B</div>
+            <div class="dropdown-item" onclick="selectDay('uk_b', 'Unterkörper B (Knie)')">Unterkörper B (Knie)</div>
         </div>
     </div>
 
@@ -405,6 +405,7 @@
                 <div>
                     <h2 class="modal-title" id="mTitle">TITLE</h2>
                     <div class="modal-target" id="mTarget">TARGET</div>
+                    <div class="modal-target" id="mHinweis" style="font-weight: 500; font-size: 13px; margin-top: 8px; line-height: 1.4; max-width: 260px;">HINWEIS</div>
                 </div>
                 <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
@@ -431,34 +432,36 @@
     <script>
         const workouts = {
             ok_a: [
-                { id: "oka_1", short:"BD", name: "Bankdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "oka_3", short:"SD", name: "Schulter", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "oka_4", short:"RU", name: "Rudern eng", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "oka_5", short:"TR", name: "Trizeps", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 },
-                { id: "oka_6", short:"BI", name: "Bizeps", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 }
+                { id: "oka_1", short:"BD", name: "KH-Bankdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Schultern fest auf der Bank." },
+                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Zur oberen Brust ziehen." },
+                { id: "oka_3", short:"SD", name: "Schulterdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Rumpf anspannen, neutrale Griffposition bevorzugen." },
+                { id: "oka_4", short:"RU", name: "Kabel-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Ellenbogen nah am Körper führen." },
+                { id: "oka_5", short:"TR", name: "Trizepsdrücken", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Oberarme fest am Körper fixieren." },
+                { id: "oka_6", short:"BI", name: "Bizeps-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Ellenbogen fixiert lassen, volle Dehnung unten." }
             ],
             uk_a: [
-                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "uka_2", short:"KH", name: "Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "uka_3", short:"BS", name: "Beinstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
-                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
-                { id: "uka_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 }
+                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Druck über Ferse, kein spitzer Winkel. Füße mittig bis hoch platzieren." },
+                { id: "uka_2", short:"RK", name: "Rum. Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Rücken gerade, Dehnung in der Oberschenkelrückseite spüren." },
+                { id: "uka_3", short:"BH", name: "Beckenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Ersatz für Beinstrecker. Schont das Kniegelenk, fokussiert das Gesäß." },
+                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrollierte Bewegung." },
+                { id: "uka_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Volle Dehnung unten." },
+                { id: "uka_6", short:"CR", name: "Kabel-Crunches", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Bauchtraining. Aktives Einrollen der Wirbelsäule." }
             ],
             ok_b: [
-                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "okb_2", short:"BR", name: "B-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
-                { id: "okb_5", short:"HC", name: "Hammer", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 },
-                { id: "okb_6", short:"TÜ", name: "Trizeps üK", target: "2 Sätze x 10-15 Wdh", defaultSets: 2 }
+                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Fokus auf Kontraktion der Brust." },
+                { id: "okb_2", short:"BR", name: "Brust-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Entlastet den unteren Rücken." },
+                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Bank auf ca. 30 Grad." },
+                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Für die Schulterbreite. Arme leicht gebeugt." },
+                { id: "okb_5", short:"HC", name: "Hammer-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Daumen zeigen nach oben." },
+                { id: "okb_6", short:"TÜ", name: "Trizeps ü. Kopf", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Maximale Dehnung für den Trizeps." }
             ],
             uk_b: [
-                { id: "ukb_1", short:"BP", name: "B-presse tief", target: "3 Sätze x 8-12 Wdh", defaultSets: 3 },
-                { id: "ukb_2", short:"AS", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
-                { id: "ukb_3", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
-                { id: "ukb_4", short:"RS", name: "Rücken", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 },
-                { id: "ukb_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3 }
+                { id: "ukb_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Füße wieder mittig/hoch. Kein spitzer Kniewinkel." },
+                { id: "ukb_2", short:"RA", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Ersatz für Walking Lunges. Schont die vordere Kniekapsel extrem." },
+                { id: "ukb_3", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrolliertes Ablassen." },
+                { id: "ukb_4", short:"RS", name: "Rückenstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Stärkt den Rumpf und den unteren Rücken." },
+                { id: "ukb_5", short:"WH", name: "Wadenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Volle Dehnung unten." },
+                { id: "ukb_6", short:"BH", name: "Beinheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Bauchtraining. Becken am höchsten Punkt aktiv einrollen." }
             ]
         };
 
@@ -527,6 +530,7 @@
 
             document.getElementById('mTitle').innerText = exInfo.name;
             document.getElementById('mTarget').innerText = exInfo.target;
+            document.getElementById('mHinweis').innerText = exInfo.hinweis || "";
             
             document.getElementById('mSets').value = data.sets;
             document.getElementById('mStart').value = data.startWeight;
