@@ -399,6 +399,11 @@
                 <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
             
+            <div id="mLastWorkoutBanner" style="display: none; background: #fafafa; border: 2px solid #E0E0E0; border-left: 6px solid #2BC47E; padding: 12px 15px; border-radius: 12px; margin-bottom: 25px;">
+                <div style="font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase;">Zuletzt geschafft:</div>
+                <div id="mLastWorkoutText" style="font-size: 16px; font-weight: 800; color: #000; line-height: 1.4; margin-top: 4px;">--</div>
+            </div>
+
             <div class="input-group">
                 <label>Sätze</label>
                 <input type="number" id="mSets" class="brutal-input" inputmode="numeric">
@@ -524,17 +529,38 @@
             const exInfo = workouts[currentDayId].find(e => e.id === exId);
             const data = workingData[exId] || { sets: exInfo.defaultSets, startWeight: '', currentWeight: '', notes: '' };
 
-            // AUTOFILL FROM HISTORY
-            if (!workingData[exId] && workoutHistory.length > 0) {
+            let lastPerformanceText = null;
+
+            // AUTOFILL AND FETCH LAST PERFORMANCE FROM HISTORY
+            if (workoutHistory.length > 0) {
                 for (let i = workoutHistory.length - 1; i >= 0; i--) {
                     const sessionData = workoutHistory[i].exercises;
                     if (sessionData && sessionData[exId]) {
-                        data.startWeight = sessionData[exId].currentWeight || sessionData[exId].startWeight || '';
-                        data.notes = sessionData[exId].notes || '';
-                        data.sets = sessionData[exId].sets || exInfo.defaultSets;
+                        const lw = sessionData[exId].currentWeight || sessionData[exId].startWeight;
+                        const lsets = sessionData[exId].sets;
+                        
+                        if (lw || lsets) {
+                             const dateObj = new Date(workoutHistory[i].timestamp);
+                             const dateStr = dateObj.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+                             lastPerformanceText = `${lw ? lw + ' kg' : '--'} • ${lsets ? lsets + ' Sätze' : '--'}  (am ${dateStr})`;
+                        }
+
+                        // Auto-fill inputs if we haven't typed anything yet today
+                        if (!workingData[exId]) {
+                            data.startWeight = lw || '';
+                            data.notes = sessionData[exId].notes || '';
+                            data.sets = lsets || exInfo.defaultSets;
+                        }
                         break;
                     }
                 }
+            }
+
+            if (lastPerformanceText) {
+                document.getElementById('mLastWorkoutBanner').style.display = 'block';
+                document.getElementById('mLastWorkoutText').innerText = lastPerformanceText;
+            } else {
+                document.getElementById('mLastWorkoutBanner').style.display = 'none';
             }
 
             document.getElementById('mTitle').innerText = exInfo.name;
