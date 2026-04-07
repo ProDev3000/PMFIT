@@ -402,10 +402,11 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <div class="modal-header">
-                <div>
+                <div style="flex: 1; padding-right: 15px;">
                     <h2 class="modal-title" id="mTitle">TITLE</h2>
                     <div class="modal-target" id="mTarget">TARGET</div>
-                    <div class="modal-target" id="mHinweis" style="font-weight: 500; font-size: 13px; margin-top: 8px; line-height: 1.4; max-width: 260px;">HINWEIS</div>
+                    <div class="modal-target" id="mHinweis" style="font-weight: 500; font-size: 13px; margin-top: 8px; margin-bottom: 12px; line-height: 1.4;">HINWEIS</div>
+                    <a href="#" target="_blank" id="mLink" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #fff; background: #000; padding: 8px 14px; border-radius: 20px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px;">▶ Video</a>
                 </div>
                 <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
@@ -437,36 +438,36 @@
     <script>
         const workouts = {
             ok_a: [
-                { id: "oka_1", short:"BD", name: "KH-Bankdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Schultern fest auf der Bank." },
-                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Volle Dehnung oben mitnehmen." },
-                { id: "oka_3", short:"FP", name: "Face-Pulls", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Zieht zur Stirn. Fokus hintere Schulter." },
-                { id: "oka_4", short:"RU", name: "Kabel-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Ellenbogen nah am Körper führen." },
-                { id: "oka_5", short:"TR", name: "Trizepsdrücken", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Oberarme fest am Körper." },
-                { id: "oka_6", short:"SC", name: "Schrägbank-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Tiefe Dehnung im Bizeps (Arme hinter Körper)." }
+                { id: "oka_1", short:"BD", name: "KH-Bankdrücken", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Schultern fest auf der Bank.", link: "https://www.youtube.com/results?search_query=Kurzhantel+Bankdr%C3%BCcken+Ausf%C3%BChrung" },
+                { id: "oka_2", short:"LZ", name: "Latzug", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Volle Dehnung oben mitnehmen.", link: "https://www.youtube.com/results?search_query=Latzug+Ausf%C3%BChrung" },
+                { id: "oka_3", short:"FP", name: "Face-Pulls", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Zieht zur Stirn. Fokus hintere Schulter.", link: "https://www.youtube.com/results?search_query=Face+Pulls+Ausf%C3%BChrung" },
+                { id: "oka_4", short:"RU", name: "Kabel-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Ellenbogen nah am Körper führen.", link: "https://www.youtube.com/results?search_query=Kabelzug+Rudern+eng+Ausf%C3%BChrung" },
+                { id: "oka_5", short:"TR", name: "Trizepsdrücken", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Oberarme fest am Körper.", link: "https://www.youtube.com/results?search_query=Trizepsdr%C3%BCcken+Kabelzug+Ausf%C3%BChrung" },
+                { id: "oka_6", short:"SC", name: "Schrägbank-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Tiefe Dehnung im Bizeps (Arme hinter Körper).", link: "https://www.youtube.com/results?search_query=Incline+Dumbbell+Curls+Ausf%C3%BChrung" }
             ],
             uk_a: [
-                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Druck über Ferse. Füße mittig bis hoch." },
-                { id: "uka_2", short:"RK", name: "Rum. Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Hüfte nach hinten, tiefe Dehnung Hamstrings." },
-                { id: "uka_3", short:"BH", name: "Beckenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Knieschonender Beinstrecker-Ersatz." },
-                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrollierte negative Bewegung." },
-                { id: "uka_5", short:"WS", name: "Waden (Sitzend)", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Fokus Soleus. Unten 2 Sek. strikte Pause!" },
-                { id: "uka_6", short:"CR", name: "Kabel-Crunches", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Aktives Einrollen der Wirbelsäule." }
+                { id: "uka_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Druck über Ferse. Füße mittig bis hoch.", link: "https://www.youtube.com/results?search_query=Beinpresse+Ausf%C3%BChrung" },
+                { id: "uka_2", short:"RK", name: "Rum. Kreuzheben", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Hüfte nach hinten, tiefe Dehnung Hamstrings.", link: "https://www.youtube.com/results?search_query=Rum%C3%A4nisches+Kreuzheben+Kurzhantel+Ausf%C3%BChrung" },
+                { id: "uka_3", short:"BH", name: "Beckenheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Knieschonender Beinstrecker-Ersatz.", link: "https://www.youtube.com/results?search_query=Hip+Thrusts+Ausf%C3%BChrung" },
+                { id: "uka_4", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrollierte negative Bewegung.", link: "https://www.youtube.com/results?search_query=Beinbeuger+Maschine+Ausf%C3%BChrung" },
+                { id: "uka_5", short:"WS", name: "Waden (Sitzend)", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Fokus Soleus. Unten 2 Sek. strikte Pause!", link: "https://www.youtube.com/results?search_query=Wadenheben+sitzend+Ausf%C3%BChrung" },
+                { id: "uka_6", short:"CR", name: "Kabel-Crunches", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Aktives Einrollen der Wirbelsäule.", link: "https://www.youtube.com/results?search_query=Kabelzug+Crunches+Ausf%C3%BChrung" }
             ],
             ok_b: [
-                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Fokus Brustkontraktion." },
-                { id: "okb_2", short:"BR", name: "Brust-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Entlastet unteren Rücken." },
-                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Bank auf max. 30 Grad." },
-                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Arme leicht gebeugt (Wasserglas gießen)." },
-                { id: "okb_5", short:"HC", name: "Hammer-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Fokus Brachialis. Daumen nach oben." },
-                { id: "okb_6", short:"TÜ", name: "Trizeps ü. Kopf", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Genutzt für maximale Stretch-Verlängerung." }
+                { id: "okb_1", short:"BP", name: "Brustpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Fokus Brustkontraktion.", link: "https://www.youtube.com/results?search_query=Brustpresse+Maschine+Ausf%C3%BChrung" },
+                { id: "okb_2", short:"BR", name: "Brust-Rudern", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Entlastet unteren Rücken.", link: "https://www.youtube.com/results?search_query=Chest+Supported+Row+Ausf%C3%BChrung" },
+                { id: "okb_3", short:"SB", name: "Schrägbank", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Bank auf max. 30 Grad.", link: "https://www.youtube.com/results?search_query=Schr%C3%A4gbankdr%C3%BCcken+Kurzhantel+Ausf%C3%BChrung" },
+                { id: "okb_4", short:"SH", name: "Seitheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Arme leicht gebeugt (Wasserglas gießen).", link: "https://www.youtube.com/results?search_query=Seitheben+Kurzhantel+Ausf%C3%BChrung" },
+                { id: "okb_5", short:"HC", name: "Hammer-Curls", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Fokus Brachialis. Daumen nach oben.", link: "https://www.youtube.com/results?search_query=Hammer+Curls+Ausf%C3%BChrung" },
+                { id: "okb_6", short:"TÜ", name: "Trizeps ü. Kopf", target: "2 Sätze x 10-15 Wdh", defaultSets: 2, hinweis: "Genutzt für maximale Stretch-Verlängerung.", link: "https://www.youtube.com/results?search_query=Overhead+Tricep+Extension+Cable+Ausf%C3%BChrung" }
             ],
             uk_b: [
-                { id: "ukb_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Füße mittig/hoch." },
-                { id: "ukb_2", short:"RA", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Reverse Lunges (nach hinten). Extrem knieschonend." },
-                { id: "ukb_3", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrolliertes Ablassen." },
-                { id: "ukb_4", short:"RS", name: "Rückenstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Stärkt Rumpf und unteren Rücken." },
-                { id: "ukb_5", short:"WSt", name: "Waden (Stehend)", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Fokus Gastrocnemius. Unten 2 Sek. Pause ohne Schwung!" },
-                { id: "ukb_6", short:"BH", name: "Beinheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Becken oben aktiv einrollen." }
+                { id: "ukb_1", short:"BP", name: "Beinpresse", target: "3 Sätze x 8-12 Wdh", defaultSets: 3, hinweis: "Füße mittig/hoch.", link: "https://www.youtube.com/results?search_query=Beinpresse+Ausf%C3%BChrung" },
+                { id: "ukb_2", short:"RA", name: "Ausfallschritte", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Reverse Lunges (nach hinten). Extrem knieschonend.", link: "https://www.youtube.com/results?search_query=Reverse+Lunges+Ausf%C3%BChrung" },
+                { id: "ukb_3", short:"BB", name: "Beinbeuger", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Kontrolliertes Ablassen.", link: "https://www.youtube.com/results?search_query=Beinbeuger+Maschine+Ausf%C3%BChrung" },
+                { id: "ukb_4", short:"RS", name: "Rückenstrecker", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Stärkt Rumpf und unteren Rücken.", link: "https://www.youtube.com/results?search_query=Hyperextensions+Ausf%C3%BChrung" },
+                { id: "ukb_5", short:"WSt", name: "Waden (Stehend)", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Fokus Gastrocnemius. Unten 2 Sek. Pause ohne Schwung!", link: "https://www.youtube.com/results?search_query=Wadenheben+stehend+Ausf%C3%BChrung" },
+                { id: "ukb_6", short:"BH", name: "Beinheben", target: "3 Sätze x 10-15 Wdh", defaultSets: 3, hinweis: "Becken oben aktiv einrollen.", link: "https://www.youtube.com/results?search_query=Beinheben+h%C3%A4ngend+Ausf%C3%BChrung" }
             ]
         };
 
@@ -536,6 +537,7 @@
             document.getElementById('mTitle').innerText = exInfo.name;
             document.getElementById('mTarget').innerText = exInfo.target;
             document.getElementById('mHinweis').innerText = exInfo.hinweis || "";
+            document.getElementById('mLink').href = exInfo.link || "#";
             
             document.getElementById('mSets').value = data.sets;
             document.getElementById('mStart').value = data.startWeight;
