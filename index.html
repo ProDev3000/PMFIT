@@ -195,13 +195,14 @@
 
         .save-btn {
             margin-top: -25px;
-            width: 60px;
+            padding: 0 30px;
             height: 60px;
-            border-radius: 50%;
-            background: #fff;
+            border-radius: 30px;
+            background: #000;
+            color: #fff;
             border: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 18px;
             font-weight: 900;
             cursor: pointer;
             display: flex;
@@ -209,11 +210,12 @@
             align-items: center;
             transition: transform 0.2s, background 0.2s;
             z-index: 11;
+            text-transform: uppercase;
         }
 
         .save-btn:active {
-            transform: scale(0.9);
-            background: #f8f8f8;
+            transform: scale(0.95);
+            background: #222;
         }
 
         /* MODAL */
@@ -386,6 +388,8 @@
             <div class="dropdown-item" onclick="selectDay('uk_a', 'Unterkörper A (Knie)')">Unterkörper A (Knie)</div>
             <div class="dropdown-item" onclick="selectDay('ok_b', 'Oberkörper B')">Oberkörper B</div>
             <div class="dropdown-item" onclick="selectDay('uk_b', 'Unterkörper B (Knie)')">Unterkörper B (Knie)</div>
+            <div style="height: 1px; background: #EEE; margin: 5px 15px;"></div>
+            <div class="dropdown-item" onclick="exportHistory()" style="color: #2BC47E;">Historie exportieren</div>
         </div>
     </div>
 
@@ -395,7 +399,7 @@
 
     <div class="bottom-arc">
         <div class="arc-inner-guide"></div>
-        <button class="save-btn" onclick="saveAll()">+</button>
+        <button class="save-btn" onclick="finishWorkout()">Training beenden</button>
     </div>
 
     <!-- MODAL -->
@@ -483,10 +487,12 @@
         let activeExId = null;
 
         let workingData = {};
+        let workoutHistory = [];
 
         function init() {
             const savedData = JSON.parse(localStorage.getItem('brutalWorkoutData')) || {};
             workingData = {...savedData};
+            workoutHistory = JSON.parse(localStorage.getItem('brutalWorkoutHistory')) || [];
             selectDay('ok_a', 'Oberkörper A');
         }
 
@@ -532,7 +538,20 @@
         function openModal(exId) {
             activeExId = exId;
             const exInfo = workouts[currentDayId].find(e => e.id === exId);
-            const data = workingData[exId] || { sets: exInfo.defaultSets, startWeight: '', currentWeight: '' };
+            const data = workingData[exId] || { sets: exInfo.defaultSets, startWeight: '', currentWeight: '', notes: '' };
+
+            // AUTOFILL FROM HISTORY
+            if (!workingData[exId] && workoutHistory.length > 0) {
+                for (let i = workoutHistory.length - 1; i >= 0; i--) {
+                    const sessionData = workoutHistory[i].exercises;
+                    if (sessionData && sessionData[exId]) {
+                        data.startWeight = sessionData[exId].currentWeight || sessionData[exId].startWeight || '';
+                        data.notes = sessionData[exId].notes || '';
+                        data.sets = sessionData[exId].sets || exInfo.defaultSets;
+                        break;
+                    }
+                }
+            }
 
             document.getElementById('mTitle').innerText = exInfo.name;
             document.getElementById('mTarget').innerText = exInfo.target;
@@ -573,13 +592,55 @@
             localStorage.setItem('brutalWorkoutData', JSON.stringify(workingData));
         }
 
-        function saveAll() {
-            localStorage.setItem('brutalWorkoutData', JSON.stringify(workingData));
-            showToast();
+        function finishWorkout() {
+            if (Object.keys(workingData).length === 0) {
+                showToast("❌ Nichts eingetragen!");
+                return;
+            }
+            
+            const timestamp = new Date().toISOString();
+            const session = {
+                timestamp: timestamp,
+                dayId: currentDayId,
+                dayName: currentDayName,
+                exercises: {...workingData}
+            };
+            
+            workoutHistory.push(session);
+            localStorage.setItem('brutalWorkoutHistory', JSON.stringify(workoutHistory));
+            
+            workingData = {};
+            localStorage.removeItem('brutalWorkoutData');
+            
+            showToast("✓ Training im Archiv gespeichert!");
+            renderGrid();
         }
 
-        function showToast() {
+        function exportHistory() {
+            if (workoutHistory.length === 0) {
+                showToast("Historie ist leer!");
+                return;
+            }
+            const dataStr = JSON.stringify(workoutHistory, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement("a");
+            a.href = url;
+            const dateStr = new Date().toISOString().split('T')[0];
+            a.download = `fitness_historie_${dateStr}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            document.getElementById('dropdown').classList.remove('show');
+            document.getElementById('headerWrapper').classList.remove('open');
+        }
+
+        function showToast(msg) {
             const toast = document.getElementById("toast");
+            if (msg) toast.innerText = msg;
             toast.classList.add("show");
             setTimeout(() => { toast.classList.remove("show"); }, 2500);
             if(navigator.vibrate) navigator.vibrate(50);
