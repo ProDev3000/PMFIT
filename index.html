@@ -163,41 +163,26 @@
             background: #000;
         }
 
-        /* BOTTOM ARC */
-        .bottom-arc {
+        /* BOTTOM BAR */
+        .bottom-bar {
             position: fixed;
             bottom: 0;
-            left: -10%;
-            width: 120%;
-            height: 125px;
-            padding-bottom: env(safe-area-inset-bottom);
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
             background: #fff;
-            border-top-left-radius: 50% 120px;
-            border-top-right-radius: 50% 120px;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            box-shadow: 0 300px 0 0 #fff, 0 -4px 30px rgba(0,0,0,0.03);
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.05);
             z-index: 10;
         }
 
-        .arc-inner-guide {
-             position: absolute;
-             top: 15px;
-             left: 10%;
-             width: 80%;
-             height: 120px;
-             border-top-left-radius: 50% 120px;
-             border-top-right-radius: 50% 120px;
-             border-top: 1px dashed #E0E0E0;
-             pointer-events: none;
-        }
-
         .save-btn {
-            margin-top: -25px;
-            padding: 0 30px;
+            width: 100%;
+            max-width: 340px;
             height: 60px;
-            border-radius: 30px;
+            border-radius: 14px;
             background: #000;
             color: #fff;
             border: none;
@@ -208,13 +193,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.2s, background 0.2s;
-            z-index: 11;
+            transition: transform 0.1s, background 0.2s;
             text-transform: uppercase;
         }
 
         .save-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
             background: #222;
         }
 
@@ -351,7 +335,7 @@
         /* TOAST */
         #toast {
             position: fixed;
-            top: calc(15px + env(safe-area-inset-top));
+            top: calc(75px + env(safe-area-inset-top));
             left: 50%;
             transform: translateX(-50%) translateY(-150px);
             background: #000;
@@ -385,9 +369,9 @@
 
         <div class="dropdown" id="dropdown">
             <div class="dropdown-item" onclick="selectDay('ok_a', 'Oberkörper A')">Oberkörper A</div>
-            <div class="dropdown-item" onclick="selectDay('uk_a', 'Unterkörper A (Knie)')">Unterkörper A (Knie)</div>
+            <div class="dropdown-item" onclick="selectDay('uk_a', 'Unterkörper A')">Unterkörper A</div>
             <div class="dropdown-item" onclick="selectDay('ok_b', 'Oberkörper B')">Oberkörper B</div>
-            <div class="dropdown-item" onclick="selectDay('uk_b', 'Unterkörper B (Knie)')">Unterkörper B (Knie)</div>
+            <div class="dropdown-item" onclick="selectDay('uk_b', 'Unterkörper B')">Unterkörper B</div>
             <div style="height: 1px; background: #EEE; margin: 5px 15px;"></div>
             <div class="dropdown-item" onclick="exportHistory()" style="color: #2BC47E;">Historie exportieren</div>
         </div>
@@ -397,8 +381,7 @@
         <!-- Circles will be rendered here -->
     </div>
 
-    <div class="bottom-arc">
-        <div class="arc-inner-guide"></div>
+    <div class="bottom-bar">
         <button class="save-btn" onclick="finishWorkout()">Training beenden</button>
     </div>
 
