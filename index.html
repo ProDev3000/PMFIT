@@ -32,6 +32,10 @@
             overscroll-behavior-y: none;
         }
 
+        body.modal-open {
+            background-color: var(--modal-bg);
+        }
+
         /* HEADER */
         .header {
             margin-bottom: 40px;
@@ -225,19 +229,31 @@
             pointer-events: auto;
         }
 
+        .modal-overlay::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: calc(120px + env(safe-area-inset-bottom));
+            background: var(--modal-bg);
+            pointer-events: none;
+        }
+
         .modal-content {
+            position: relative;
+            z-index: 1;
             background: var(--modal-bg);
             width: 100%;
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
-            padding: 30px 20px calc(50px + env(safe-area-inset-bottom)) 20px;
+            padding: 30px 20px calc(72px + env(safe-area-inset-bottom)) 20px;
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             max-height: min(87dvh, calc(100dvh - env(safe-area-inset-top) - 28px));
             overflow-y: auto;
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
-            box-shadow: 0 100px 0 0 var(--modal-bg);
         }
 
         .modal-overlay.show .modal-content {
@@ -964,6 +980,7 @@
             renderHistoryChart(exId);
             updateProgressHint();
             document.querySelector('.modal-content').scrollTop = 0;
+            document.body.classList.add('modal-open');
             document.getElementById('modalOverlay').classList.add('show');
         }
 
@@ -975,6 +992,7 @@
 
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('show');
+            document.body.classList.remove('modal-open');
             activeExId = null;
             activeSetData = [];
             activeChartPoints = [];
