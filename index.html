@@ -206,7 +206,8 @@
         /* MODAL */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            inset: 0;
+            height: 100dvh;
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
@@ -229,11 +230,14 @@
             width: 100%;
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
-            padding: 30px 20px 50px 20px;
+            padding: 30px 20px calc(50px + env(safe-area-inset-bottom)) 20px;
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 90vh;
+            max-height: min(87dvh, calc(100dvh - env(safe-area-inset-top) - 28px));
             overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 100px 0 0 var(--modal-bg);
         }
 
         .modal-overlay.show .modal-content {
@@ -331,6 +335,21 @@
         }
         .done-btn:active {
             transform: scale(0.98);
+        }
+
+        .notes-input {
+            min-height: 120px;
+            height: auto;
+            padding: 8px 0 14px;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: #000;
+            -webkit-text-fill-color: #000;
+            opacity: 1;
+            resize: none;
+            overflow-y: hidden;
+            border-bottom-width: 2px;
         }
 
         /* SET TRACKING */
@@ -519,7 +538,7 @@
 
             <div class="input-group" style="margin-top: 30px;">
                 <label>Notizen / Geräte-Einstellung</label>
-                <textarea id="mNotes" class="brutal-input" style="font-size: 16px; min-height: 40px; padding: 5px 0 10px; line-height: 1.4; resize: vertical; overflow: auto; border-bottom: 2px solid #E0E0E0;" placeholder="Sitzhöhe 4, Pad 2..."></textarea>
+                <textarea id="mNotes" class="brutal-input notes-input" placeholder="Sitzhöhe 4, Pad 2..." oninput="autoResizeNotes()"></textarea>
             </div>
 
             <button class="done-btn" onclick="saveActiveEx()">Fertig</button>
@@ -938,6 +957,7 @@
             document.getElementById('mLink').href = exInfo.link || '#';
             document.getElementById('mSets').value = data.sets;
             document.getElementById('mNotes').value = data.notes || '';
+            autoResizeNotes();
 
             activeSetData = data.setData;
             renderSetRows();
@@ -945,6 +965,12 @@
             updateProgressHint();
             document.querySelector('.modal-content').scrollTop = 0;
             document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function autoResizeNotes() {
+            const notes = document.getElementById('mNotes');
+            notes.style.height = 'auto';
+            notes.style.height = `${Math.max(120, notes.scrollHeight)}px`;
         }
 
         function closeModal() {
